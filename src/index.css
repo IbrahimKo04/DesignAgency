@@ -94,4 +94,25 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     @apply transition-colors duration-500 ease-in-out;
   }
+
+  /* Custom Scrollbar Styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 10px; /* Horizontal scrollbar height */
+    width: 10px;  /* Vertical scrollbar width (if needed) */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--secondary)); /* Track color matches theme secondary bg */
+    border-radius: var(--radius);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.5); /* Thumb color */
+    border-radius: var(--radius);
+    transition: background 0.3s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary)); /* Hover color matches primary theme */
+  }
 }

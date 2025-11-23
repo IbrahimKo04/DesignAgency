@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
-import { Hero } from './components/Hero';
-import { Portfolio } from './components/Portfolio';
-import { AboutUs } from './components/AboutUs';
-import { Contact } from './components/Contact'; // <-- 1. Import the new component
 import { Footer } from './components/Footer';
 import { ParticleBackground } from './components/ParticleBackground';
 
+// Import the new Pages
+import { Home } from './pages/Home';
+import { PortfolioPage } from './pages/PortfolioPage';
+import { ContactPage } from './pages/ContactPage';
+
 function App() {
-  // ... (your isDark state logic) ...
   const [isDark, setIsDark] = useState(true);
+  const { pathname } = useLocation();
+
   useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
@@ -19,16 +22,24 @@ function App() {
     }
   }, [isDark]);
 
+  // Automatically scroll to top when changing pages
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <>
       <ParticleBackground />
       <Navigation isDark={isDark} setIsDark={setIsDark} />
-      <main>
-        <Hero isDark={isDark} />
-        <Portfolio />
-        <AboutUs />
-        <Contact /> {/* <-- 2. Add the component here */}
+      
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home isDark={isDark} />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </main>
+
       <Footer />
     </>
   );

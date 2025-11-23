@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils"; // Import cn utility
+import { cn } from "@/lib/utils";
+import { NavLink, Link } from "react-router-dom";
 
 export const Navigation = ({ isDark, setIsDark }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,40 +14,44 @@ export const Navigation = ({ isDark, setIsDark }) => {
     exit: { opacity: 0, y: -20 }
   };
 
+  // Helper for active link styling
+  const getNavLinkClass = ({ isActive }) => 
+    cn(
+      "text-foreground hover:text-primary transition-colors duration-300 relative group",
+      isActive ? "text-primary font-medium" : ""
+    );
+
   return (
     <>
-      {/* Main Nav Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold">
+            {/* Home Link */}
+            <Link to="/" className="text-2xl font-bold">
               <span className="bg-gradient-primary bg-clip-text text-transparent">Studio</span>
-            </div>
+            </Link>
 
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
-              <a href="#work" className="text-foreground hover:text-primary transition-colors duration-300 relative group">
-                Work
+              <NavLink to="/" className={getNavLinkClass}>
+                Home
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-              </a>
-              <a href="#about" className="text-foreground hover:text-primary transition-colors duration-300 relative group">
-                About
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-              </a>
+              </NavLink>
               
-              {/* --- UPDATED THIS --- */}
-              {/* Changed from <Button> to <a ...> and applied button styles */}
-              <a
-                href="#contact"
-                className={cn(
-                  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-                  "h-9 px-3", // This matches size="sm"
-                  "bg-gradient-primary hover:shadow-glow transition-all duration-500"
-                )}
-              >
-                Contact
-              </a>
-              {/* -------------------- */}
+              <NavLink to="/portfolio" className={getNavLinkClass}>
+                Portfolio
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
+              </NavLink>
+              
+              <Link to="/contact">
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="bg-gradient-primary hover:shadow-glow transition-all duration-500"
+                >
+                  Contact Us
+                </Button>
+              </Link>
               
               <Button
                 variant="ghost"
@@ -63,8 +68,8 @@ export const Navigation = ({ isDark, setIsDark }) => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsDark(!isDarks)}
-                className="hover:bg-secondary transition-colors duration-300"
+                onClick={() => setIsDark(!isDark)}
+                className="hover:bg-secondary"
               >
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
@@ -72,7 +77,7 @@ export const Navigation = ({ isDark, setIsDark }) => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="hover:bg-secondary transition-colors duration-300"
+                className="hover:bg-secondary"
               >
                 {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
@@ -81,7 +86,7 @@ export const Navigation = ({ isDark, setIsDark }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -90,38 +95,31 @@ export const Navigation = ({ isDark, setIsDark }) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            transition={{ duration: 0.2, ease: "easeInOut" }}
           >
             <div className="container mx-auto px-6 py-4 flex flex-col items-center gap-4">
-              <a 
-                href="#work" 
-                className="text-lg text-foreground hover:text-primary transition-colors duration-300"
+              <Link 
+                to="/" 
+                className="text-lg text-foreground hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Work
-              </a>
-              <a 
-                href="#about" 
-                className="text-lg text-foreground hover:text-primary transition-colors duration-300"
+                Home
+              </Link>
+              <Link 
+                to="/portfolio" 
+                className="text-lg text-foreground hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                About
-              </a>
-              
-              {/* --- UPDATED THIS --- */}
-              {/* Changed from <Button> to <a ...> and applied button styles */}
-              <a
-                href="#contact"
-                className={cn(
-                  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-                  "h-9 px-3 w-full", // This matches size="sm" and w-full
-                  "bg-gradient-primary hover:shadow-glow transition-all duration-500"
-                )}
+                Portfolio
+              </Link>
+              <Link 
+                to="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full"
               >
-                Contact
-              </a>
-              {/* -------------------- */}
+                <Button className="w-full bg-gradient-primary">
+                  Contact Us
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}

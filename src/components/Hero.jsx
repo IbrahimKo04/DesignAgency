@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { HeroScene } from './HeroScene';
-import { useMediaQuery } from '../hooks/useMediaQuery'; // <-- Import the hook
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { Link } from "react-router-dom";
 
 const heroBgPlaceholder = "https://via.placeholder.com/1920x1080/000000/FFFFFF?text=Hero+Background";
 
@@ -43,13 +44,17 @@ export const Hero = ({ isDark }) => {
 
           {/* Stacks buttons on mobile */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-border hover:border-primary hover:bg-secondary/50 transition-all duration-300 text-lg px-8 w-full sm:w-auto" // Full width on mobile
-            >
-              View Our Work
-            </Button>
+            {/* Updated Link to point to /portfolio */}
+            <Link to="/portfolio">
+              <Button
+                size="lg"
+                variant="outline"
+                // Added hover:text-foreground so text doesn't turn white on light bg
+                className="border-border hover:border-primary hover:bg-secondary/50 hover:text-foreground transition-all duration-300 text-lg px-8 w-full sm:w-auto" 
+              >
+                View Our Work
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
